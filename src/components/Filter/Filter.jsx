@@ -7,7 +7,7 @@ export const Filter = () => {
   const filter = useSelector(getFilter);
   const dispatch = useDispatch();
 
-  const onKeyClick = ({ target: { value } }) => {
+  const handleClick = ({ target: { value } }) => {
     dispatch(updateFilterValue(value));
   };
 
@@ -20,7 +20,7 @@ export const Filter = () => {
           value={filter}
           type="text"
           name="filter"
-          onChange={onKeyClick}
+          onChange={handleClick}
         />
       </Label>
     </>

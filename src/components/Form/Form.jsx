@@ -1,32 +1,49 @@
 import { ContainerForm, Label, Input, Btn } from './Form.styled';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { Notify } from 'notiflix';
-// import { addItem } from 'store/phoneBook/phoneBookSlice';
 import { getPhoneBook } from 'store/selectors';
+import { addContactThunk } from 'store/phoneBook/thunk';
+import { popupMessage, typePopupMessage } from 'utils/popupMessage';
 
 export const Form = () => {
   const dispatch = useDispatch();
   const contactList = useSelector(getPhoneBook);
 
   const formik = useFormik({
-    initialValues: { name: '', number: '' },
+    initialValues: { name: '', phone: '' },
     onSubmit: (values, { resetForm }) => {
-      addContact(values);
-      resetForm();
+      addContact(values, resetForm);
     },
   });
 
-  const addContact = values => {
+  const addContact = (values, resetForm) => {
     const isContact = contactList.find(
       contact => contact.name.toLowerCase() === values.name.toLowerCase()
     );
-    if (isContact) {
-      Notify.warning(`${isContact.name} is contacts.`, {
-        position: 'center-top',
-      });
+    const isPhone = contactList.find(
+      contact => contact.phone.toLowerCase() === values.phone.toLowerCase()
+    );
+    if (isContact && isPhone) {
+      popupMessage('This contact already exists!', typePopupMessage.warning);
+      return;
     }
-    // else dispatch(addItem(values));
+    if (isContact) {
+      popupMessage(
+        `Contact with the name ${values.name} already exists!`,
+        typePopupMessage.warning
+      );
+      return;
+    }
+    if (isPhone) {
+      popupMessage(
+        `Another name registered to this number!`,
+        typePopupMessage.warning
+      );
+      return;
+    } else {
+      dispatch(addContactThunk(values));
+      resetForm();
+    }
   };
 
   return (
@@ -47,9 +64,9 @@ export const Form = () => {
         <Label>
           Number
           <Input
-            value={formik.values.number}
+            value={formik.values.phone}
             type="tel"
-            name="number"
+            name="phone"
             onChange={formik.handleChange}
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"

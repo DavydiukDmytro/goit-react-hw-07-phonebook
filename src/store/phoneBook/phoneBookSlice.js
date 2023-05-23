@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { phoneBookInitialState } from './initialState';
 import { addContactThunk, deleteContactThunk, getContactsThunk } from './thunk';
+import { popupMessage, typePopupMessage } from 'utils/popupMessage';
 
 const handlePending = state => {
   state.isLoading = true;
@@ -9,12 +10,27 @@ const handlePending = state => {
 const handleFulfilled = (state, { payload }) => {
   state.isLoading = false;
   state.items = payload;
-  state.error = '';
+  state.error = null;
 };
 
 const handleRejected = (state, { payload }) => {
   state.isLoading = false;
   state.error = payload;
+};
+
+const handleFulfilledDelete = (state, { payload }) => {
+  state.isLoading = false;
+  state.error = null;
+  const index = state.items.findIndex(task => task.id === payload.id);
+  state.items.splice(index, 1);
+  popupMessage('Сontact deleted!', typePopupMessage.info);
+};
+
+const handleFulfilledAdd = (state, { payload }) => {
+  state.isLoading = false;
+  state.error = null;
+  state.items.push(payload);
+  popupMessage('Сontact saved!');
 };
 
 const phoneBookSlice = createSlice({
@@ -26,10 +42,10 @@ const phoneBookSlice = createSlice({
       .addCase(getContactsThunk.fulfilled, handleFulfilled)
       .addCase(getContactsThunk.rejected, handleRejected)
       .addCase(addContactThunk.pending, handlePending)
-      .addCase(addContactThunk.fulfilled, handleFulfilled)
+      .addCase(addContactThunk.fulfilled, handleFulfilledAdd)
       .addCase(addContactThunk.rejected, handleRejected)
       .addCase(deleteContactThunk.pending, handlePending)
-      .addCase(deleteContactThunk.fulfilled, handleFulfilled)
+      .addCase(deleteContactThunk.fulfilled, handleFulfilledDelete)
       .addCase(deleteContactThunk.rejected, handleRejected);
   },
 });
