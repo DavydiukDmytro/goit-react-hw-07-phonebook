@@ -3,6 +3,7 @@ import { Form } from 'components/Form';
 import { Filter } from 'components/Filter';
 import { Container, TitleH1, TitleH2 } from './App.styled';
 import { useEffect } from 'react';
+import { ContactsSection } from 'components/ContactsSection';
 
 export const App = () => {
   return (
@@ -11,7 +12,7 @@ export const App = () => {
       <Form />
       <Filter />
       <TitleH2>Contacts</TitleH2>
-      <ContactList />
+      <ContactsSection />
     </Container>
   );
 };

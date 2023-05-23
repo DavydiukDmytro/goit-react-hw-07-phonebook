@@ -1,20 +1,17 @@
-import { useEffect } from 'react';
 import { Contacts, Btn, Item, Text } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilterPhoneBook } from 'store/selectors';
-import { deleteContactThunk, getContactsThunk } from 'store/phoneBook/thunk';
+import { getFilterPhoneBook, getStatusLoading } from 'store/selectors';
+import { deleteContactThunk } from 'store/phoneBook/thunk';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
   const contactList = useSelector(getFilterPhoneBook);
-  useEffect(() => {
-    dispatch(getContactsThunk());
-  }, [dispatch]);
+  const isLoading = useSelector(getStatusLoading);
 
   return (
     <>
       {contactList.length === 0 ? (
-        <Text>No contacts</Text>
+        !isLoading && <Text>No contacts</Text>
       ) : (
         <ul>
           {contactList.map(name => (
@@ -26,7 +23,9 @@ export const ContactList = () => {
                 type="button"
                 id={name.id}
                 onClick={({ target: { id } }) => {
-                  dispatch(deleteContactThunk(id));
+                  if (!isLoading) {
+                    dispatch(deleteContactThunk(id));
+                  }
                 }}
               >
                 Delete

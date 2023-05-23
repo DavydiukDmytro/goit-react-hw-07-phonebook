@@ -11,3 +11,7 @@ export const getFilterPhoneBook = state => {
     );
   }
 };
+
+export const getStatusLoading = state => state.contacts.isLoading;
+
+export const getError = state => state.contacts.error;
