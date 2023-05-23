@@ -1,29 +1,37 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { phoneBookInitialState } from './initialState';
+import { addContactThunk, deleteContactThunk, getContactsThunk } from './thunk';
+
+const handlePending = state => {
+  state.isLoading = true;
+};
+
+const handleFulfilled = (state, { payload }) => {
+  state.isLoading = false;
+  state.items = payload;
+  state.error = '';
+};
+
+const handleRejected = (state, { payload }) => {
+  state.isLoading = false;
+  state.error = payload;
+};
 
 const phoneBookSlice = createSlice({
   name: 'phoneBook',
   initialState: phoneBookInitialState,
-  reducers: {
-    addItem: {
-      reducer(state, action) {
-        state.list.push(action.payload);
-      },
-      prepare(contacts) {
-        return {
-          payload: {
-            ...contacts,
-            id: nanoid(),
-          },
-        };
-      },
-    },
-    deleteItem(state, action) {
-      const index = state.list.findIndex(item => item.id === action.payload);
-      state.list.splice(index, 1);
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(getContactsThunk.pending, handlePending)
+      .addCase(getContactsThunk.fulfilled, handleFulfilled)
+      .addCase(getContactsThunk.rejected, handleRejected)
+      .addCase(addContactThunk.pending, handlePending)
+      .addCase(addContactThunk.fulfilled, handleFulfilled)
+      .addCase(addContactThunk.rejected, handleRejected)
+      .addCase(deleteContactThunk.pending, handlePending)
+      .addCase(deleteContactThunk.fulfilled, handleFulfilled)
+      .addCase(deleteContactThunk.rejected, handleRejected);
   },
 });
 
-export const { addItem, deleteItem } = phoneBookSlice.actions;
 export const phoneBookReducer = phoneBookSlice.reducer;

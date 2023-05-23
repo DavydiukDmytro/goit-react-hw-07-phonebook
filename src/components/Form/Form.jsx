@@ -2,7 +2,7 @@ import { ContainerForm, Label, Input, Btn } from './Form.styled';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { Notify } from 'notiflix';
-import { addItem } from 'store/phoneBook/phoneBookSlice';
+// import { addItem } from 'store/phoneBook/phoneBookSlice';
 import { getPhoneBook } from 'store/selectors';
 
 export const Form = () => {
@@ -25,7 +25,8 @@ export const Form = () => {
       Notify.warning(`${isContact.name} is contacts.`, {
         position: 'center-top',
       });
-    } else dispatch(addItem(values));
+    }
+    // else dispatch(addItem(values));
   };
 
   return (

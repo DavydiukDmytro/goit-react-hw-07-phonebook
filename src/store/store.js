@@ -1,18 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { reducer } from './reducer';
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-
-const persistConfig = {
-  key: 'phoneBook',
-  storage,
-  whitelist: ['phoneBook'],
-};
-
-const persistedReducer = persistReducer(persistConfig, reducer);
+import { filterReducer } from './filter/filterSlice';
+import { phoneBookReducer } from './phoneBook/phoneBookSlice';
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    filters: filterReducer,
+    contacts: phoneBookReducer,
+  },
 });
-
-export const persistor = persistStore(store);

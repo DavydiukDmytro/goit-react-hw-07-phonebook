@@ -1,7 +1,7 @@
 import { Contacts, Btn, Item, Text } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFilter, getPhoneBook } from 'store/selectors';
-import { deleteItem } from 'store/phoneBook/phoneBookSlice';
+// import { deleteItem } from 'store/phoneBook/phoneBookSlice';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ export const ContactList = () => {
                 type="button"
                 id={name.id}
                 onClick={({ target: { id } }) => {
-                  dispatch(deleteItem(id));
+                  // dispatch(deleteItem(id));
                 }}
               >
                 Delete
