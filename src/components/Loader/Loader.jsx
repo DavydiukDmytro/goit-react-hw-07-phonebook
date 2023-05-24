@@ -1,17 +1,17 @@
-import { ThreeDots } from 'react-loader-spinner';
+import { ProgressBar } from 'react-loader-spinner';
 import { Container } from './Loader.styled';
 
 export const Loader = () => {
   return (
     <Container>
-      <ThreeDots
-        height="80"
-        width="80"
-        radius="9"
-        color="#ff6b0a"
-        ariaLabel="three-dots-loading"
-        wrapperClassName=""
-        visible={true}
+      <ProgressBar
+        height="90"
+        width="90"
+        ariaLabel="progress-bar-loading"
+        wrapperStyle={{}}
+        wrapperClass="progress-bar-wrapper"
+        borderColor="#1c1e21"
+        barColor="#1c1e21"
       />
     </Container>
   );

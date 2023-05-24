@@ -17,3 +17,13 @@ export const TitleH2 = styled.h2`
   padding-bottom: 25px;
   color: var(--color-accent);
 `;
+
+export const ErrorTitle = styled.p`
+  font-size: 28px;
+  font-weight: 500;
+`;
+export const ErrorType = styled.p`
+  margin-top: 12px;
+  font-size: 20px;
+  font-weight: 500;
+`;
