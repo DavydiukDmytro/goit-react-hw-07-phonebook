@@ -1,52 +1,40 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { phoneBookInitialState } from './initialState';
 import { addContactThunk, deleteContactThunk, getContactsThunk } from './thunk';
-import { popupMessage, typePopupMessage } from 'utils/popupMessage';
+import {
+  handlePending,
+  handleFulfilled,
+  handleRejected,
+  handleFulfilledDelete,
+  handleFulfilledAdd,
+} from './handleReducers';
 
-const handlePending = state => {
-  state.isLoading = true;
+const defaultStatus = {
+  pending: 'pending',
+  fulfilled: 'fulfilled',
+  rejected: 'rejected',
 };
 
-const handleFulfilled = (state, { payload }) => {
-  state.isLoading = false;
-  state.items = payload;
-  state.error = null;
-};
+const customArr = [getContactsThunk, addContactThunk, deleteContactThunk];
 
-const handleRejected = (state, { payload }) => {
-  state.isLoading = false;
-  state.error = payload;
-};
-
-const handleFulfilledDelete = (state, { payload }) => {
-  state.isLoading = false;
-  state.error = null;
-  const index = state.items.findIndex(task => task.id === payload.id);
-  state.items.splice(index, 1);
-  popupMessage('Сontact deleted!', typePopupMessage.info);
-};
-
-const handleFulfilledAdd = (state, { payload }) => {
-  state.isLoading = false;
-  state.error = null;
-  state.items.push(payload);
-  popupMessage('Сontact saved!');
-};
+const customArrStatusActions = status => customArr.map(el => el[status]);
 
 const phoneBookSlice = createSlice({
   name: 'phoneBook',
   initialState: phoneBookInitialState,
   extraReducers: builder => {
     builder
-      .addCase(getContactsThunk.pending, handlePending)
       .addCase(getContactsThunk.fulfilled, handleFulfilled)
-      .addCase(getContactsThunk.rejected, handleRejected)
-      .addCase(addContactThunk.pending, handlePending)
       .addCase(addContactThunk.fulfilled, handleFulfilledAdd)
-      .addCase(addContactThunk.rejected, handleRejected)
-      .addCase(deleteContactThunk.pending, handlePending)
       .addCase(deleteContactThunk.fulfilled, handleFulfilledDelete)
-      .addCase(deleteContactThunk.rejected, handleRejected);
+      .addMatcher(
+        isAnyOf(...customArrStatusActions(defaultStatus.pending)),
+        handlePending
+      )
+      .addMatcher(
+        isAnyOf(...customArrStatusActions(defaultStatus.rejected)),
+        handleRejected
+      );
   },
 });
 

@@ -1,8 +1,6 @@
-import { ContactList } from 'components/ContactList';
 import { Form } from 'components/Form';
 import { Filter } from 'components/Filter';
 import { Container, TitleH1, TitleH2 } from './App.styled';
-import { useEffect } from 'react';
 import { ContactsSection } from 'components/ContactsSection';
 
 export const App = () => {
