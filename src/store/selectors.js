@@ -9,10 +9,13 @@ export const selectFilterPhoneBook = createSelector(
   (contactList, filter) => {
     if (contactList.length === 0) {
       return [];
-    } else {
+    }
+    if (isNaN(filter[0])) {
       return contactList.filter(item =>
         item.name.toLowerCase().includes(filter.toLowerCase())
       );
+    } else {
+      return contactList.filter(item => item.phone.includes(filter));
     }
   }
 );
