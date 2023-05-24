@@ -1,10 +1,10 @@
 import { Label, Input } from 'components/Form/Form.styled';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateFilterValue } from 'store/filter/filterSlice';
-import { getFilter } from 'store/selectors';
+import { selectFilter } from 'store/selectors';
 
 export const Filter = () => {
-  const filter = useSelector(getFilter);
+  const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
 
   const handleClick = ({ target: { value } }) => {

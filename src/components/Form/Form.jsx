@@ -1,13 +1,13 @@
 import { ContainerForm, Label, Input, Btn } from './Form.styled';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPhoneBook } from 'store/selectors';
+import { selectPhoneBook } from 'store/selectors';
 import { addContactThunk } from 'store/phoneBook/thunk';
 import { popupMessage, typePopupMessage } from 'utils/popupMessage';
 
 export const Form = () => {
   const dispatch = useDispatch();
-  const contactList = useSelector(getPhoneBook);
+  const contactList = useSelector(selectPhoneBook);
 
   const formik = useFormik({
     initialValues: { name: '', phone: '' },

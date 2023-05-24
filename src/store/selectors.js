@@ -1,17 +1,22 @@
-export const getPhoneBook = state => state.contacts.items;
+import { createSelector } from '@reduxjs/toolkit';
 
-export const getFilter = state => state.filters.filter;
+export const selectPhoneBook = state => state.contacts.items;
 
-export const getFilterPhoneBook = state => {
-  if (state.contacts.items.length === 0) {
-    return [];
-  } else {
-    return state.contacts.items.filter(item =>
-      item.name.toLowerCase().includes(state.filters.filter.toLowerCase())
-    );
+export const selectFilter = state => state.filters.filter;
+
+export const selectFilterPhoneBook = createSelector(
+  [selectPhoneBook, selectFilter],
+  (contactList, filter) => {
+    if (contactList.length === 0) {
+      return [];
+    } else {
+      return contactList.filter(item =>
+        item.name.toLowerCase().includes(filter.toLowerCase())
+      );
+    }
   }
-};
+);
 
-export const getStatusLoading = state => state.contacts.isLoading;
+export const selectStatusLoading = state => state.contacts.isLoading;
 
-export const getError = state => state.contacts.error;
+export const selectError = state => state.contacts.error;

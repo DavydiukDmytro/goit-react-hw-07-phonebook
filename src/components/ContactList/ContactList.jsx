@@ -1,12 +1,12 @@
 import { Contacts, Btn, Item, Text } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilterPhoneBook, getStatusLoading } from 'store/selectors';
+import { selectFilterPhoneBook, selectStatusLoading } from 'store/selectors';
 import { deleteContactThunk } from 'store/phoneBook/thunk';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
-  const contactList = useSelector(getFilterPhoneBook);
-  const isLoading = useSelector(getStatusLoading);
+  const contactList = useSelector(selectFilterPhoneBook);
+  const isLoading = useSelector(selectStatusLoading);
 
   return (
     <>
